@@ -30,6 +30,7 @@ main {
   flex-col 
   md:flex-row 
   min-h-screen 
-  w-full;
+  w-full
+  bg-blue-50
 }
 </style>

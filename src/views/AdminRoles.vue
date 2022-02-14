@@ -1,7 +1,11 @@
 <template>
     <section>
         <h5>Roles</h5>
-
+        <div class="flex">
+             <router-link to="/admin/role/create">
+                <button class="button-emerald">Nouveau</button>
+             </router-link>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -60,15 +64,7 @@ export default {
         space-y-10
     }
     a{
-        @apply
-        block 
-        bg-slate-50 
-        shadow 
-        p-2 
-        transition 
-        duration-200 
-        hover:bg-sky-600 
-        hover:text-white
+       
     }
     h5{
         @apply
@@ -128,6 +124,28 @@ export default {
         flex 
         space-x-2 
         font-bold
+    }
+    .button-emerald{
+        @apply
+        bg-emerald-600 
+        text-white 
+        p-2 
+        shadow 
+        rounded-lg 
+     
+        hover:bg-emerald-500
+    }
+
+    .pagination>a{
+         @apply
+        block 
+        bg-slate-50 
+        shadow 
+        p-2 
+        transition 
+        duration-200 
+        hover:bg-sky-600 
+        hover:text-white
     }
     th.first{
         @apply
