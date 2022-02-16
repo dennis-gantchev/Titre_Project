@@ -41,7 +41,7 @@
                 <span>Mes demandes</span>
             </div>
             <div v-show="activeLink['requests'] === true" id="requests-sub" class="nav-sub-link" >
-                <a id="requests-create" @click="onClickSubLink" v-bind:class="activeSubLink['requests-create'] ? 'active-sub-link' : '' ">Crée</a>
+                <router-link to="/request/create" id="requests-create" @click="onClickSubLink" v-bind:class="activeSubLink['requests-create'] ? 'active-sub-link' : '' ">Crée</router-link>
                 <a id="requests-progress" @click="onClickSubLink" v-bind:class="activeSubLink['requests-progress'] ? 'active-sub-link' : '' ">En cours</a>
                 <a id="requests-finish" @click="onClickSubLink" v-bind:class="activeSubLink['requests-finish'] ? 'active-sub-link' : '' ">Achevé</a>
             </div>

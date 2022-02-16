@@ -24,8 +24,7 @@ export default{
 
 <style lang="scss" scoped>
 main {
-  @apply 
-  relative
+  @apply
   flex 
   flex-col 
   md:flex-row 

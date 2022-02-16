@@ -8,7 +8,7 @@ import AdminRoles from "./../views/AdminRoles.vue"
 import AdminRequests from "./../views/AdminRequests.vue"
 import AdminCreateAccount from "./../views/AdminCreateAccount.vue"
 import AdminCreateRole from "./../views/AdminCreateRole.vue"
-
+import RequestCreate from "./../views/RequestCreate.vue"
 
 const routes = [
     {
@@ -25,6 +25,11 @@ const routes = [
         path:"/nav",
         name:"nav",
         component: Navigation
+    },
+    {
+        path:"/request/create",
+        name:"request-create",
+        component: RequestCreate
     },
     {
         path:"/account/profile",

@@ -1,7 +1,11 @@
 <template>
     <section>
         <h5>Demandes</h5>
-        
+        <div class="flex">
+             <router-link to="/request/create">
+                <button class="button-emerald">Nouveau</button>
+             </router-link>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -68,15 +72,7 @@ export default {
         space-y-10
     }
     a{
-        @apply
-        block 
-        bg-slate-50 
-        shadow 
-        p-2 
-        transition 
-        duration-200 
-        hover:bg-sky-600 
-        hover:text-white
+       
     }
     h5{
         @apply
@@ -137,6 +133,16 @@ export default {
         space-x-2 
         font-bold
     }
+    .button-emerald{
+        @apply
+        bg-emerald-600 
+        text-white 
+        p-2 
+        shadow 
+        rounded-lg 
+     
+        hover:bg-emerald-500
+    }
     th.first{
         @apply
         rounded-tl-lg
@@ -145,5 +151,28 @@ export default {
         @apply
         rounded-tr-lg
     }
+    .pagination>a{
+         @apply
+        block 
+        bg-slate-50 
+        shadow 
+        p-2 
+        transition 
+        duration-200 
+        hover:bg-sky-600 
+        hover:text-white
+    }
+    .pagination-content>a{
+         @apply
+        block 
+        bg-slate-50 
+        shadow 
+        p-2 
+        transition 
+        duration-200 
+        hover:bg-sky-600 
+        hover:text-white
+    }
 </style>
+
 
