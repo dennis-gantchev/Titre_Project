@@ -9,6 +9,9 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Request.belongsTo(models.Account, {foreignKey:'client_id', as: 'client'})
+      Request.belongsTo(models.Account, {foreignKey:{name:'agent_id', allowNull:true}, as:'agent'})
+      Request.belongsTo(models.Role, {foreignKey:'role_id', as: "role"})
     }
   }
   Request.init({
