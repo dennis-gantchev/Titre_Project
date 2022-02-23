@@ -6,21 +6,21 @@
                 <div class="form-group">
                     <div class="input-group">
                         <label for="">Nom</label>
-                        <input type="text" name="firstName" />
+                        <input type="text" name="firstName" v-model="firstName"/>
                     </div>
                     <div class="input-group">
                         <label for="">Prénom</label>
-                        <input type="text" name="lastName" />
+                        <input type="text" name="lastName" v-model="lastName"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <label for="">Email</label>
-                        <input type="email" name="email" />
+                        <input type="email" name="email" v-model="email"/>
                     </div>
                     <div class="input-group">
                         <label for="">Rôle</label>
-                        <select name="role" id="">
+                        <select name="role" id="" v-model="role">
                             <option value="">Client</option>
                             <option value="">Prestataire</option>
                             <option value="">Administrateur</option>
@@ -30,11 +30,11 @@
                 <div class="form-group">
                     <div class="input-group">
                         <label for="">Mot de passe</label>
-                        <input type="password" name="password" />
+                        <input type="password" name="password" v-model="password"/>
                     </div>
                     <div class="input-group">
                         <label for="">Mot de passe confirmation</label>
-                        <input type="password" name="passwordConfirm" />
+                        <input type="password" name="passwordConfirm" v-model="passwordConfirm"/>
                     </div>
                 </div>
                 <div class="button-container">
@@ -49,7 +49,15 @@
 
 <script>
 export default {
-    
+    data(){
+        return{
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            passwordConfirm: ""
+        }
+    }
 }
 </script>
 

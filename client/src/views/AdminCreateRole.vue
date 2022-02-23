@@ -6,11 +6,11 @@
                 <div class="form-group">
                     <div class="input-group">
                         <label for="">Nom</label>
-                        <input type="text" name="name" />
+                        <input type="text" name="roleName" v-model="roleName" />
                     </div>
                     <div class="input-group">
                         <label for="">Autorisation</label>
-                        <select name="level" id="">
+                        <select name="level" id="" v-model="level">
                             <option class="" value="">1</option>
                             <option value="">2</option>
                             <option value="">3</option>
@@ -27,7 +27,13 @@
 
 <script>
 export default {
-    
+    data(){
+        return{
+            roleName:"",
+            level: ""
+
+        }
+    }
 }
 </script>
 

@@ -16,25 +16,25 @@
                 <div class="form-group">
                     <div class="input-group">
                         <label>Nom</label>
-                        <input type="text" name="lastName" />
+                        <input type="text" name="lastName"  v-model="lastName"/>
                     </div>
                         <div class="input-group">
                         <label>Prénom</label>
-                        <input type="text" name="firstName" />
+                        <input type="text" name="firstName" v-model="firstName"/>
                         </div>
                 </div>
                 <div class="input-group">
                     <label>Email</label>
-                    <input type="email" name="email" /> 
+                    <input type="email" name="email" v-model="email"/> 
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <label>Mot de passe</label>
-                        <input type="password" name="password" /> 
+                        <input type="password" name="password" v-model="password" /> 
                     </div>
                     <div class="input-group">
                         <label>Mot de passe confirmation</label>
-                        <input type="password" name="passwordConfirm" /> 
+                        <input type="password" name="passwordConfirm" v-model="passwordConfirm"/> 
                     </div>
                 </div>
                     <div class="button-container">
@@ -53,7 +53,15 @@
 
 <script>
 export default {
-    
+    data(){
+        return{
+            lastName:"",
+            firstName:"",
+            email: "",
+            password: "",
+            passwordConfirm:""
+        }
+    }
 }
 </script>
 

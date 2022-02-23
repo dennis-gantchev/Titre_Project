@@ -6,11 +6,11 @@
                 <div class="form-group">
                     <div class="input-group">
                         <label for="">Titre</label>
-                        <input type="text" name="title">
+                        <input type="text" name="title" v-model="title">
                     </div>
                     <div class="input-group">
                         <label for="">Rôle</label>
-                        <select name="role" id="">
+                        <select name="role" id="" v-model="role">
                             <option value="">Client</option>
                             <option value="">Prestataire</option>
                             <option value="">Administrateur</option>
@@ -19,7 +19,7 @@
                 </div>
                 <div class="input-group">
                     <label for="">Contenu</label>
-                    <textarea name="content" id="" cols="30" rows="10">
+                    <textarea name="content" id="" cols="30" rows="10" v-model="content">
 
                     </textarea>
                 </div>
@@ -33,7 +33,13 @@
 
 <script>
 export default {
-    
+    data(){
+        return{
+            title:"",
+            role: "",
+            content: ""
+        }
+    }
 }
 </script>
 
