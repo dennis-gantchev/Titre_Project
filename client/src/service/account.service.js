@@ -18,9 +18,9 @@ const AccountService = {
             haveError = true
             error.firstName.push('Le prénom doit contenir seulement des lettres.')
         }
-        if(!validator.isLength(firstName,{min:3})){
+        if(!validator.isLength(firstName,{min:3, max:15})){
             haveError = true
-            error.firstName.push('Le prénom doit contenir plus de 3 caractères.')
+            error.firstName.push('Le prénom doit contenir plus de 3 caractères et 15 carctère maximum.')
         }
 
         if(validator.isEmpty(lastName)){
@@ -31,9 +31,9 @@ const AccountService = {
             haveError = true
             error.lastName.push('Le nom doit contenir seulement des lettre.')
         }
-        if(!validator.isLength(lastName, {min:3})){
+        if(!validator.isLength(lastName, {min:3, max:15})){
             haveError = true
-            error.lastName.push('Le nom doit contenir plus de 3 caractères.')
+            error.lastName.push('Le nom doit contenir plus de 3 caractères et 15 carctère maximum.')
         }
 
         if(validator.isEmpty(email)){
