@@ -1,20 +1,20 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "./../views/Home.vue";
-import SignIn from "./../views/SignIn.vue";
+import Login from "../views/auth/Login.vue";
+import SignIn from "./../views/auth/SignIn.vue";
 import Navigation from "./../views/Navigation.vue"
-import Profile from "./../views/Profile.vue"
-import AdminAccounts from "./../views/AdminAccounts.vue"
-import AdminRoles from "./../views/AdminRoles.vue"
-import AdminRequests from "./../views/AdminRequests.vue"
-import AdminCreateAccount from "./../views/AdminCreateAccount.vue"
-import AdminCreateRole from "./../views/AdminCreateRole.vue"
-import RequestCreate from "./../views/RequestCreate.vue"
+import Profile from "../views/account/Profile.vue"
+import AdminAccounts from "../views/admin/AdminAccounts.vue"
+import AdminRoles from "../views/admin/AdminRoles.vue"
+import AdminRequests from "../views/admin/AdminRequests.vue"
+import AdminCreateAccount from "../views/admin/AdminCreateAccount.vue"
+import AdminCreateRole from "../views/admin/AdminCreateRole.vue"
+import RequestCreate from "../views/request/RequestCreate.vue"
 
 const routes = [
     {
         path: "/",
-        name: "Home",
-        component: Home,
+        name: "Login",
+        component: Login,
     },
     {
         path: "/signin",

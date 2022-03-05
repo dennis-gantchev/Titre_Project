@@ -1,14 +1,17 @@
 <template>
-  <main>
-    <Navigation v-show="$route.path !== '/' && $route.path !== '/signin'"/>
-    <router-view/>
-  </main>
+  <fragment>
+    <main v-if="$route.path !== '/' && $route.path !== '/signin'">
+      <Navigation />
+      <router-view/>
+    </main>
+    <router-view v-else />
+  </fragment>
 </template>
 
 
 <script>
-import Home from './views/Home.vue';
-import SignIn from './views/SignIn.vue';
+import Login from './views/auth/Login.vue';
+import SignIn from './views/auth/SignIn.vue';
 
 import Navigation from './views/Navigation.vue';
 export default{

@@ -1,69 +1,83 @@
 import validator from "validator"
 
 const AccountService = {
-    validate: (firstName, lastName, email, password, passwordConfirm) =>{
+    createValidate: (account) =>{
         let haveError = false
-        const error = {
+        const errors = {
             firstName:[],
             lastName: [],
             email: [],
             password: [],
             passwordConfirm:[]
         }
-        if(validator.isEmpty(firstName)){
+        if(validator.isEmpty(account.firstName)){
             haveError = true
-            error.firstName.push('Le prénom ne doit pas être vide.')
+            errors.firstName.push('Le prénom ne doit pas être vide.')
+        }else{
+            if(!validator.isAlpha(account.firstName, "fr-FR")){
+                haveError = true
+                errors.firstName.push('Le prénom doit contenir seulement des lettres.')
+            }
+            if(!validator.isLength(account.firstName,{min:3, max:15})){
+                haveError = true
+                errors.firstName.push('Le prénom doit contenir plus de 3 caractères et 15 carctères maximum.')
+            }
         }
-        if(!validator.isAlpha(firstName, "fr-FR")){
+        
+
+        if(validator.isEmpty(account.lastName)){
             haveError = true
-            error.firstName.push('Le prénom doit contenir seulement des lettres.')
+            errors.lastName.push('Le nom doit pas être vide.')
+        }else{
+            if(!validator.isAlpha(account.lastName, "fr-FR")){
+                haveError = true
+                errors.lastName.push('Le nom doit contenir seulement des lettres.')
+            }
+            if(!validator.isLength(account.lastName, {min:3, max:15})){
+                haveError = true
+                errors.lastName.push('Le nom doit contenir plus de 3 caractères et 15 carctères maximum.')
+            }
         }
-        if(!validator.isLength(firstName,{min:3, max:15})){
+        
+
+        if(validator.isEmpty(account.email)){
             haveError = true
-            error.firstName.push('Le prénom doit contenir plus de 3 caractères et 15 carctère maximum.')
+            errors.email.push("Le mail ne doit pas être vide.")
+        }else{
+            if(!validator.isEmail(account.email)){
+                haveError = true
+                errors.email.push("Le format du mail est incorrecte.")
+            }
+        }
+        
+        if(validator.isEmpty(account.password)){
+            haveError = true
+            errors.password.push("Le mot de passe ne doit pas être vide.")
+        }else{
+            if(!validator.isStrongPassword(account.password, {minLength: 8, minLowercase:1, minUppercase: 1, minNumbers:1})){
+                haveError = true
+                errors.password.push('Le mot de passe doit contenir au minimum 8 caractères (une majuscule, une minuscule, un chiffre)')
+            }
         }
 
-        if(validator.isEmpty(lastName)){
+        
+        if(validator.isEmpty(account.passwordConfirm)){
             haveError = true
-            error.lastName.push('Le nom doit pas être vide.')
+            errors.passwordConfirm.push("Le mot de passe de confirmation ne doit pas être vide.")
+        }else{
+            if(account.password !== account.passwordConfirm){
+                haveError = true
+                errors.passwordConfirm.push("Le mot de passe de confirmation ne correspond pas")
+            }
         }
-        if(!validator.isAlpha(lastName, "fr-FR")){
-            haveError = true
-            error.lastName.push('Le nom doit contenir seulement des lettre.')
-        }
-        if(!validator.isLength(lastName, {min:3, max:15})){
-            haveError = true
-            error.lastName.push('Le nom doit contenir plus de 3 caractères et 15 carctère maximum.')
-        }
-
-        if(validator.isEmpty(email)){
-            haveError = true
-            error.email.push("Le mail ne doit pas être vide.")
-        }
-        if(!validator.isEmail(email)){
-            haveError = true
-            error.email.push("Le format du mail est incorrecte.")
-        }
-
-        if(validator.isEmpty(password)){
-            haveError = true
-            error.password.push("Le mot de passe ne doit pas être vide.")
-        }
-
-        if(!validator.isStrongPassword(password, {minLength: 8, minLowercase:1, minUppercase: 1, minNumbers:1})){
-            haveError = true
-            error.password.push('Le mot de passe doit contenir au minimum 8 caractère (une majuscule, une minuscule, un chiffre)')
-        }
-
-        if(password != passwordConfirm){
-            haveError = true
-            error.passwordConfirm.push("Le mot de passe de confirmation ne correspond pas")
-        }
+        
 
         if(haveError){
-            return error
+            return errors
         }else{
-            return true
+            return false
         }
-    }
+    },
 }
+
+export default AccountService
