@@ -41,7 +41,10 @@
                                 </span>
                             </div> 
                         </div>
-                        <div class="button-container">
+                      <div v-if="response === false" class="errors-container">
+                        <small>- Les identifiants n'existes pas</small>
+                      </div>
+                      <div class="button-container">
                             <button class="button-sky" type="submit">Connexion</button>
                         </div>
                     </form>
@@ -57,6 +60,9 @@
 
 <script>
 import AuthService from './../../service/auth.service'
+import BackendService from "../../service/backend.service";
+
+import Auth from "../../utils/Auth";
 export default {
     data(){
         return{
@@ -71,14 +77,32 @@ export default {
             errors: {
                 email: [],
                 password:[]
-            }        
+            },
+            response: null
         }
     },
     methods:{
-        onSubmit(e){
+        async onSubmit(e){
             e.preventDefault()
-            this.lastCredential = JSON.parse(JSON.stringify(this.credential))
-            this.errors = AuthService.validate(this.credential)
+
+            const errors = AuthService.validate(this.credential)
+
+            if(errors){
+              this.errors = errors
+              this.lastCredential = JSON.parse(JSON.stringify(this.credential))
+            }else{
+              this.response = await BackendService.post('auth/login', this.credential)
+              console.log(this.response)
+              if(this.response.ok){
+                const auth = new Auth()
+                auth.setToken(this.response.token)
+                await this.$router.push("/account/profile")
+              }else{
+                if(this.response === 500){
+                  await this.$router.push("/500")
+                }
+              }
+            }
         }
     }
 }
@@ -157,14 +181,16 @@ export default {
     .section-left{
         @apply 
         bg-slate-800 
-        flex 
+        flex
+          flex-auto
         md:w-1/2 
         justify-center 
         items-center;
     }
     .section-right{
         @apply 
-        flex 
+        flex
+          flex-auto
         justify-center 
         items-center 
         md:w-1/2 

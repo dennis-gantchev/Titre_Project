@@ -1,29 +1,19 @@
 
 export async function up(queryInterface, Sequelize) {
-  await queryInterface.createTable('Accounts', {
+  await queryInterface.createTable('Role', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    first_name: {
-      type: Sequelize.STRING
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false
     },
-    last_name: {
-      type: Sequelize.STRING
-    },
-    email: {
-      type: Sequelize.STRING
-    },
-    password: {
-      type: Sequelize.STRING
-    },
-    create_at: {
-      type: Sequelize.DATE
-    },
-    update_at: {
-      type: Sequelize.DATE
+    level: {
+      type: Sequelize.INTEGER,
+      allowNull: false
     },
     createdAt: {
       allowNull: false,
@@ -36,5 +26,5 @@ export async function up(queryInterface, Sequelize) {
   });
 }
 export async function down(queryInterface, Sequelize) {
-  await queryInterface.dropTable('Accounts');
+  await queryInterface.dropTable('Role');
 }

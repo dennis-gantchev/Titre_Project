@@ -1,48 +1,49 @@
-import { QueryInterface } from "sequelize/types";
+
 export async function up(queryInterface, Sequelize) {
-  await queryInterface.createTable('Requests', {
+  await queryInterface.createTable('Request', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    client_id: {
+    clientId: {
       type: Sequelize.INTEGER,
+      allowNull: false,
+      foreignKey: true,
       references: {
         model: "Account",
         key: "id"
       }
     },
-    agent_id: {
+    agentId: {
       type: Sequelize.INTEGER,
       allowNull : true,
+      foreignKey: true,
       references: {
         model: "Account",
         key: "id"
       }
     },
-    role_id: {
+    roleId: {
       type: Sequelize.INTEGER,
+      allowNull: false,
+      foreignKey: true,
       references: {
         model: "Role",
         key: "id"
       }
     },
     name: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false
     },
     content: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false
     },
     resolved: {
       type: Sequelize.BOOLEAN
-    },
-    create_at: {
-      type: Sequelize.DATE
-    },
-    update_at: {
-      type: Sequelize.DATE
     },
     createdAt: {
       allowNull: false,
@@ -57,5 +58,5 @@ export async function up(queryInterface, Sequelize) {
   
 }
 export async function down(queryInterface, Sequelize) {
-  await queryInterface.dropTable('Requests');
+  await queryInterface.dropTable('Request');
 }

@@ -1,6 +1,19 @@
 <template>
-    
-    <section>
+    <div class="menu-mobile-container">
+      <!-- logo -->
+      <router-link to="/request/progress" class="menu-mobile-link">
+        Service client
+      </router-link>
+
+      <!-- mobile menu button -->
+      <button @click="onClickMenuMobile" class="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700">
+        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+    <section v-bind:class="showMenu === true ? 'section' : 'section-2' ">
+
         <div class="logo-container" >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
@@ -19,10 +32,10 @@
                 <router-link to="/account/profile" id="account-profile" @click="onClickSubLink" v-bind:class="activeSubLink['account-profile'] ? 'active-sub-link' : '' ">
                     Profile
                 </router-link>
-                <a id="account-logout" @click="onClickSubLink" v-bind:class="activeSubLink['account-logout'] ? 'active-sub-link' : '' ">Déconnexion</a>
+                <a id="account-logout" @click="onLogout" v-bind:class="activeSubLink['account-logout'] ? 'active-sub-link' : '' ">Déconnexion</a>
             </div>
 
-            <div id="admin" v-bind:class="activeLink['admin'] === true ? 'active-link' : 'nav-link'" @click="onClickLink">
+            <div v-if="roleLevel === 3" id="admin" v-bind:class="activeLink['admin'] === true ? 'active-link' : 'nav-link'" @click="onClickLink">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
                 </svg>
@@ -41,20 +54,20 @@
                 <span>Mes demandes</span>
             </div>
             <div v-show="activeLink['requests'] === true" id="requests-sub" class="nav-sub-link" >
-                <router-link to="/request/create" id="requests-create" @click="onClickSubLink" v-bind:class="activeSubLink['requests-create'] ? 'active-sub-link' : '' ">Crée</router-link>
-                <a id="requests-progress" @click="onClickSubLink" v-bind:class="activeSubLink['requests-progress'] ? 'active-sub-link' : '' ">En cours</a>
-                <a id="requests-finish" @click="onClickSubLink" v-bind:class="activeSubLink['requests-finish'] ? 'active-sub-link' : '' ">Achevé</a>
+                <router-link to="/request/create" id="requests-create" @click="onClickSubLink" v-bind:class="activeSubLink['requests-create'] ? 'active-sub-link' : '' ">Ajouter</router-link>
+                <router-link to="/request/progress" id="requests-progress" @click="onClickSubLink" v-bind:class="activeSubLink['requests-progress'] ? 'active-sub-link' : '' ">En cours</router-link>
+              <router-link to="/request/completed" @click="onClickSubLink" v-bind:class="activeSubLink['requests-finish'] ? 'active-sub-link' : '' ">Achever</router-link>
             </div>
 
-            <div id="ticket" v-bind:class="activeLink['ticket'] === true ? 'active-link' : 'nav-link'" @click="onClickLink">
+            <div v-if="roleLevel > 1" id="ticket" v-bind:class="activeLink['ticket'] === true ? 'active-link' : 'nav-link'" @click="onClickLink">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                 </svg>
                 <span>Tickets</span>
             </div>
             <div v-show="activeLink['ticket'] === true" id="ticket-sub" class="nav-sub-link">
-                <a id="ticket-progress" @click="onClickSubLink" v-bind:class="activeSubLink['ticket-progress'] ? 'active-sub-link' : '' ">En cours</a>
-                <a id="ticket-finish" @click="onClickSubLink" v-bind:class="activeSubLink['ticket-finish'] ? 'active-sub-link' : '' ">Achevé</a>
+                <router-link to="/request/agent/progress" id="ticket-progress" @click="onClickSubLink" v-bind:class="activeSubLink['ticket-progress'] ? 'active-sub-link' : '' ">En cours</router-link>
+                <router-link to="/request/agent/completed" id="ticket-finish" @click="onClickSubLink" v-bind:class="activeSubLink['ticket-finish'] ? 'active-sub-link' : '' ">Achever</router-link>
             </div>
 
         </nav>
@@ -63,17 +76,26 @@
 </template>
 
 <script>
+import Auth from "../utils/Auth";
+
 export default {
     data () {
         return {
             activeLink: {},
             activeSubLink:{},
             lastActiveLink: "",
-            lastActiveSubLink: ""
+            lastActiveSubLink: "",
+            showMenu:true,
+            roleLevel : null
         }
-       
+
     },
-    methods:{ 
+    beforeMount() {
+      const auth = new Auth()
+      const { roleLevel } = auth.getProfile()
+      this.roleLevel = roleLevel
+    },
+  methods:{
         onClickLink (event) {
             const { id } = event.currentTarget
             
@@ -104,6 +126,21 @@ export default {
                 this.lastActiveSubLink = id
                 this.activeSubLink[id] = true
             }
+        },
+        onClickMenuMobile(){
+
+          if(this.showMenu){
+            this.showMenu = false
+          }else{
+            this.showMenu = true
+          }
+          console.log(this.showMenu)
+        },
+        async onLogout(){
+          const auth = new Auth()
+
+          auth.logout()
+          await this.$router.push("/")
         }
 
     }
@@ -120,27 +157,6 @@ main {
     min-h-screen 
     w-full;
 }
-section{
-    @apply
-    bg-slate-900 
-    shadow 
-    text-blue-100 
-    w-64 
-    mx-0 
-    space-y-6 
-    py-7 
-    absolute 
-    inset-y-0 
-    left-0 
-    md:relative 
-    transform 
-    -translate-x-full 
-    md:relative 
-    md:translate-x-0 
-    transition 
-    duration-200 
-    ease-in-out
-}
 nav{
     @apply
     space-y-2
@@ -153,6 +169,64 @@ a{
     transition 
     duration-200 
     hover:bg-slate-600
+}
+.menu-mobile-container{
+  @apply
+  bg-slate-800
+  text-blue-100
+  flex
+  justify-between
+  md:hidden
+}
+.menu-mobile-link{
+  @apply
+  block
+  p-4
+  text-white
+  font-bold
+  self-center
+}
+.section{
+  @apply
+  bg-slate-900
+  shadow
+  text-blue-100
+  w-64
+  mx-0
+  space-y-6
+  py-7
+  absolute
+  inset-y-0
+  left-0
+  md:relative
+  transform
+  -translate-x-full
+  md:relative
+  md:translate-x-0
+  transition
+  duration-200
+  ease-in-out
+}
+.section-2{
+  @apply
+  bg-slate-900
+  shadow
+  text-blue-100
+  w-64
+  mx-0
+  space-y-6
+  py-7
+  absolute
+  inset-y-0
+  left-0
+  md:relative
+  transform
+  -translate-x-full
+  sm:absolute
+  translate-x-0
+  transition
+  duration-200
+  ease-in-out
 }
 .logo-container{
     @apply

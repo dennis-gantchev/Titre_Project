@@ -9,9 +9,11 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Request.belongsTo(models.Account, {foreignKey:'client_id', as: 'client'})
-      Request.belongsTo(models.Account, {foreignKey:{name:'agent_id', allowNull:true}, as:'agent'})
-      Request.belongsTo(models.Role, {foreignKey:'role_id', as: "role"})
+      Request.hasOne(models.Account,{foreignKey:'id', sourceKey:"clientId"})
+      Request.hasOne(models.Role,{as: 'role', foreignKey:'id', sourceKey:"roleId"})
+      // Request.belongsTo(models.Account, {foreignKey:'clientId', as: 'client'})
+      // Request.belongsTo(models.Account, {foreignKey:{name:'agentId', allowNull:true}, as:'agent'})
+      // Request.belongsTo(models.Role, {foreignKey:'roleId', as: "role"})
     }
   }
   Request.init({
@@ -20,11 +22,37 @@ export default (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true
     },
+    clientId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      foreignKey: true,
+      references: {
+        model: "Account",
+        key: "id"
+      }
+    },
+    agentId: {
+      type: DataTypes.INTEGER,
+      allowNull : true,
+      foreignKey: true,
+      references: {
+        model: "Account",
+        key: "id"
+      }
+    },
+    roleId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      foreignKey: true,
+      references: {
+        model: "Role",
+        key: "id"
+      }
+    },
     name: {
       type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
-        isAlphanumeric: true,
         len: [3, 50],
         notNull: true
       }
@@ -33,7 +61,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: false,
       validate: {
-        isAlphanumeric: true,
         len: [3, 255],
         notNull: true
       }
@@ -41,12 +68,12 @@ export default (sequelize, DataTypes) => {
     resolved: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: true,
+      defaultValue: false,
       validate: {
         notNull: true
       }
     },
-    create_at: {
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
@@ -54,7 +81,7 @@ export default (sequelize, DataTypes) => {
         isDate: true
       },
     },
-    update_at: {
+    updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
@@ -64,6 +91,7 @@ export default (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
+    freezeTableName: true,
     modelName: 'Request',
   });
   return Request;

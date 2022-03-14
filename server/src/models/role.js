@@ -9,7 +9,8 @@ export default (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // Role.hasMany(models.Request)
+      // Role.belongsTo(models.Request, {foreignKey:'id', as: "roleId"})
     }
   }
   Role.init({
@@ -37,7 +38,7 @@ export default (sequelize, DataTypes) => {
         notNull: true
       }
     },
-    create_at: {
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
@@ -45,7 +46,7 @@ export default (sequelize, DataTypes) => {
         isDate: true
       }
     },
-    update_at: {
+    updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
@@ -55,6 +56,7 @@ export default (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
+    freezeTableName: true,
     modelName: 'Role',
   });
   return Role;

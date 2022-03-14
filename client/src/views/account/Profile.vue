@@ -7,30 +7,30 @@
                 <div class="content-container">
                     
                     <div class="content-row">
-                        <p>Nom: Jean</p>
+                        <p>Nom: {{account.firstName}}</p>
                     </div>
 
                     <div class="content-row">
-                        <p>Prénom: Paul</p>
+                        <p>Prénom: {{account.lastName}}</p>
                     </div>
 
                     <div class="content-row">
-                        <p>Email: jean@gmail.com</p>
+                        <p>Email: {{account.email}}</p>
                     </div>
 
                     <div class="content-row">
-                        <p>Rôle: <span class="tag">Client</span></p>
+                        <p>Rôle: <span class="tag">{{account.roleName}}</span></p>
                     </div>
                 </div>
             </div>
             <div class="profile-footer">
-                <p>Crée le 28 mars 2020</p>
-                <p>Modifiée le 28 mars 2020</p>
+                <p>Crée le {{account.createdAt}}</p>
+                <p>Modifié le {{account.updatedAt}}</p>
             </div>
         </article>
         <div class="button-container">
-            <button class="button-sky">Modifier</button>
-            <button class="button-rose">Supprimer</button>
+            <router-link to="/account/edit"><button class="button-sky">Modifier</button></router-link>
+            <a><button class="button-rose" @click="onDelete">Supprimer</button></a>
         </div>
 
     </section>
@@ -39,8 +39,56 @@
 
 
 <script>
+import BackendService from "../../service/backend.service";
+import DateUtils from "../../utils/DateUtils";
 export default {
-    
+    data(){
+      return {
+        account: {
+          firstName: null,
+          lastName: null,
+          email: null,
+          createdAt: null,
+          updatedAt: null,
+          roleName: null
+        }
+      }
+    },
+    async beforeMount() {
+      const response = await BackendService.get('account/profile','')
+      console.log(response)
+      if(response.ok){
+        const { account } = response
+        account.createdAt = DateUtils.convert(account.createdAt)
+        account.updatedAt = DateUtils.convert(account.updatedAt)
+        this.account = account
+      }else{
+        if(response.status === 500){
+          await this.$router.push("/500")
+        }
+
+        if(response.status === 403){
+          await this.$router.push("/403")
+        }
+      }
+    },
+  methods: {
+      async onDelete(){
+        const response = await BackendService.delete('account/delete','')
+
+        if(response.ok){
+          await this.$router.push("/")
+        }else{
+
+          if(response.status === 403){
+            await this.$router.push("/403")
+          }
+          if(response.status === 500){
+            await this.$router.push("/500")
+          }
+        }
+      }
+  }
 }
 </script>
 
@@ -127,12 +175,12 @@ article{
     flex 
     flex-col 
     md:flex-row 
-    justify-between
+    md:justify-between
 }
 
 .button-sky{
     @apply
- bg-sky-600 
+    bg-sky-600
     text-white 
     p-2 
     shadow 

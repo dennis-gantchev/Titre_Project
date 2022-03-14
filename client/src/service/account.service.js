@@ -1,7 +1,7 @@
 import validator from "validator"
 
 const AccountService = {
-    createValidate: (account) =>{
+    validate: (account) =>{
         let haveError = false
         const errors = {
             firstName:[],
@@ -20,14 +20,14 @@ const AccountService = {
             }
             if(!validator.isLength(account.firstName,{min:3, max:15})){
                 haveError = true
-                errors.firstName.push('Le prénom doit contenir plus de 3 caractères et 15 carctères maximum.')
+                errors.firstName.push('Le prénom doit contenir plus de 3 caractères et 15 caractères maximum.')
             }
         }
         
 
         if(validator.isEmpty(account.lastName)){
             haveError = true
-            errors.lastName.push('Le nom doit pas être vide.')
+            errors.lastName.push('Le nom ne doit pas être vide.')
         }else{
             if(!validator.isAlpha(account.lastName, "fr-FR")){
                 haveError = true
@@ -35,7 +35,7 @@ const AccountService = {
             }
             if(!validator.isLength(account.lastName, {min:3, max:15})){
                 haveError = true
-                errors.lastName.push('Le nom doit contenir plus de 3 caractères et 15 carctères maximum.')
+                errors.lastName.push('Le nom doit contenir plus de 3 caractères et 15 caractères maximum.')
             }
         }
         
@@ -54,7 +54,7 @@ const AccountService = {
             haveError = true
             errors.password.push("Le mot de passe ne doit pas être vide.")
         }else{
-            if(!validator.isStrongPassword(account.password, {minLength: 8, minLowercase:1, minUppercase: 1, minNumbers:1})){
+            if(validator.isStrongPassword(account.password, {minLength: 8, minLowercase:1, minUppercase: 1, minNumbers:1})){
                 haveError = true
                 errors.password.push('Le mot de passe doit contenir au minimum 8 caractères (une majuscule, une minuscule, un chiffre)')
             }
@@ -78,6 +78,60 @@ const AccountService = {
             return false
         }
     },
+    editValidate: (account) =>{
+        let haveError = false
+        const errors = {
+            firstName:[],
+            lastName: [],
+            email: []
+        }
+        if(validator.isEmpty(account.firstName)){
+            haveError = true
+            errors.firstName.push('Le prénom ne doit pas être vide.')
+        }else{
+            if(!validator.isAlpha(account.firstName, "fr-FR")){
+                haveError = true
+                errors.firstName.push('Le prénom doit contenir seulement des lettres.')
+            }
+            if(!validator.isLength(account.firstName,{min:3, max:15})){
+                haveError = true
+                errors.firstName.push('Le prénom doit contenir plus de 3 caractères et 15 caractères maximum.')
+            }
+        }
+
+
+        if(validator.isEmpty(account.lastName)){
+            haveError = true
+            errors.lastName.push('Le nom ne doit pas être vide.')
+        }else{
+            if(!validator.isAlpha(account.lastName, "fr-FR")){
+                haveError = true
+                errors.lastName.push('Le nom doit contenir seulement des lettres.')
+            }
+            if(!validator.isLength(account.lastName, {min:3, max:15})){
+                haveError = true
+                errors.lastName.push('Le nom doit contenir plus de 3 caractères et 15 caractères maximum.')
+            }
+        }
+
+
+        if(validator.isEmpty(account.email)){
+            haveError = true
+            errors.email.push("Le mail ne doit pas être vide.")
+        }else{
+            if(!validator.isEmail(account.email)){
+                haveError = true
+                errors.email.push("Le format du mail est incorrecte.")
+            }
+        }
+
+
+        if(haveError){
+            return errors
+        }else{
+            return false
+        }
+    }
 }
 
 export default AccountService

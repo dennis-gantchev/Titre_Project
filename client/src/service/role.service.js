@@ -35,7 +35,7 @@ const RoleService = {
             errors.level.push('Le niveau de permission doit être un numérique')
         }
 
-        if(!(level > 0 && level > 3)){
+        if(!(level > 0 && level <= 3)){
             haveError = true
             errors.level.push('Le niveau doit être compris entre 1 et 3.')
         }

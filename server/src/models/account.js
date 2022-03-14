@@ -1,4 +1,4 @@
-import { Model } from 'sequelize';
+import { Model, Sequelize, DataType } from 'sequelize';
 export default (sequelize, DataTypes) => {
   class Account extends Model {
     /**
@@ -8,6 +8,8 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // Account.hasMany(models.Request)
+      Account.belongsTo(models.Request, {foreignKey:'id', as: "client"})
     }
   }
   Account.init({
@@ -16,7 +18,17 @@ export default (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true
     },
-    first_name: {
+    roleId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      foreignKey: true,
+      references: {
+        model:"Role",
+        key:"id"
+      },
+      defaultValue: 1
+    },
+    firstName: {
       type: DataTypes.STRING(15),
       allowNull: false,
       validate: {
@@ -25,7 +37,7 @@ export default (sequelize, DataTypes) => {
         notNull: true
       }
     },
-    last_name: {
+    lastName: {
       type: DataTypes.STRING(15),
       allowNull: false,
       validate: {
@@ -47,11 +59,10 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: false,
       validate: {
-        isAlphanumeric: true,
         notNull: true
       }
     },
-    create_at: {
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
@@ -59,7 +70,7 @@ export default (sequelize, DataTypes) => {
         isDate: true
       }
     },
-    update_at: {
+    updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
@@ -69,6 +80,7 @@ export default (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
+    freezeTableName: true,
     modelName: 'Account',
   });
   return Account;

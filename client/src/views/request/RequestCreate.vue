@@ -2,18 +2,18 @@
     <section>
         <h5>Nouvelle demande</h5>
         <div class="form-container">
-            <form @submit="onSubmit" method="POST">
+            <form @submit.prevent="onSubmit" method="POST">
                 <div class="form-group">
                     <div class="input-group">
                         <label for="title">Titre</label>
                         <input 
                             type="text" 
                             name="title" 
-                            v-model="request.title" 
-                            v-bind:class="errors.title.length && request.title === lastRequest.title ? 'errors-input': 'input'"
+                            v-model="request.name"
+                            v-bind:class="errors.name.length && request.name === lastRequest.name ? 'errors-input': 'input'"
                         />
-                        <div v-if="errors.title.length" class="errors-container">
-                            <span v-for="error in errors.title" v-bind:key="error">
+                        <div v-if="errors.name.length" class="errors-container">
+                            <span v-for="error in errors.name" v-bind:key="error">
                                 <small>- {{error}}</small>
                             </span>
                         </div>
@@ -22,13 +22,16 @@
                         <label for="role">Rôle</label>
                         <select 
                             name="role" 
-                            v-model="request.role"
+                            v-model="request.roleId"
                             class="input"
                         >
-                            <option value="">Client</option>
-                            <option value="">Prestataire</option>
-                            <option value="">Administrateur</option>
+                          <option v-for="role in roles" v-bind:key="role.id" :value="role.id">{{role.name}}</option>
                         </select>
+                        <div v-if="errors.roleId.length" class="errors-container">
+                              <span v-for="error in errors.roleId" v-bind:key="error">
+                                  <small>- {{error}}</small>
+                              </span>
+                        </div>
                     </div>
                 </div>
                 <div class="input-group">
@@ -58,33 +61,68 @@
 
 <script>
 import RequestService from './../../service/request.service'
+import BackendService from "../../service/backend.service";
 export default {
     data(){
         return{
             request: {
-                title:"",
-                role: "",
+                name:"",
+                roleId: "",
                 content: ""
             },
             lastRequest: {
-                title:"",
-                role: "",
+                name:"",
+                roleId: "",
                 content: ""
             },
             errors: {
-                title:[],
-                role: [],
+                name:[],
+                roleId: [],
                 content: []
-            }
+            },
+            roles: []
             
         }
     },
-    methods: {
-        onSubmit(e){
-            e.preventDefault()
-            this.lastRequest = JSON.parse(JSON.stringify(this.request))
-            this.errors = RequestService.validate(this.request)
+    async beforeMount() {
+      const response = await BackendService.get('request/new','')
+      console.log(response)
+      if(response.ok){
+        const { roles } = response
+        this.roles = roles
+      }else{
+        if(response.status === 500){
+          await this.$router.push("/500")
+        }
 
+        if(response.status === 403){
+          await this.$router.push("/403")
+        }
+      }
+    },
+    methods: {
+        async onSubmit(){
+            console.log(this.request)
+
+            const errors = RequestService.validate(this.request, this.roles)
+
+            if(errors){
+              this.errors = errors
+              this.lastRequest = JSON.parse(JSON.stringify(this.request))
+            }else{
+              this.response = await BackendService.post('request/create', this.request)
+              if(this.response.ok){
+                await this.$router.push("/request/progress")
+              }else{
+                if(this.response.status === 500){
+                  await this.$router.push("/500")
+                }
+
+                if(this.response.status === 403){
+                  await this.$router.push("/403")
+                }
+              }
+            }
         }
     }
 

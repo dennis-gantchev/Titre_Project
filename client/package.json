@@ -8,6 +8,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "dayjs": "^1.10.8",
+    "jwt-decode": "^3.1.2",
+    "utf8": "^3.0.0",
     "validator": "^13.7.0",
     "vue": "^3.2.25",
     "vue-router": "^4.0.12"

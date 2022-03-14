@@ -22,7 +22,8 @@ readdirSync(__dirname)
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
   })
   .forEach(file => {
-    const model = require(join(__dirname, file))(sequelize, DataTypes);
+    // eslint-disable-next-line global-require,import/no-dynamic-require
+    const model = require(join(__dirname, file)).default(sequelize, DataTypes);
     db[model.name] = model;
   });
 

@@ -8,11 +8,11 @@
                 <h5 class="title-left">Service client</h5>
             </div>
         </section>
-        <section class="section-right">
+        <section class="section-right ">
             <div class="signin-container">
                 <h5 class="title-right">Inscription</h5>
                 <div class="signin">
-                    <form @submit="onSubmit" action="POST">
+                    <form @submit.prevent="onSubmit" action="POST">
                         <div class="form-group">
                             <div class="input-group">
                                 <label>Nom</label>
@@ -86,8 +86,12 @@
                                     </span>
                                 </div>
                             </div>
+
                         </div>
-                            <div class="button-container">
+                        <div v-show="response === false" class="errors-container">
+                          <small >- Email déjà utilisé.</small>
+                        </div>
+                        <div class="button-container">
                             <button class="button-emerald" type="submit">Inscription</button>
                         </div>
                     </form>
@@ -104,6 +108,8 @@
 
 <script>
 import AccountService from '../../service/account.service'
+import BackendService from '../../service/backend.service'
+
 export default {
     data(){
         return{
@@ -127,21 +133,32 @@ export default {
                 email: [],
                 password: [],
                 passwordConfirm:[]
-            }
+            },
+            response: null
+
+
             
         }
     },
-    methods: {
-        onSubmit(e){
-            e.preventDefault()
+  methods: {
+        async onSubmit() {
 
-            this.errors = AccountService.validate(this.account)
 
-            if(this.errors){
-                this.lastAccount = JSON.parse(JSON.stringify(this.account))
+          const errors = AccountService.validate(this.account)
+
+          if (errors) {
+            this.errors = errors
+            this.lastAccount = JSON.parse(JSON.stringify(this.account))
+          } else {
+            this.response = await BackendService.post('account/create', this.account)
+            if(this.response.ok){
+              await this.$router.push("/")
             }else{
-                alert('success')
+              if(this.response.status === 500){
+                await this.$router.push("/500")
+              }
             }
+          }
         }
     }
 }
@@ -151,9 +168,9 @@ export default {
     main {
         @apply
         flex 
-        flex-col 
+        flex-col
         md:flex-row 
-        min-h-screen 
+        min-h-screen
         w-full
         bg-blue-50
     }
@@ -229,17 +246,21 @@ export default {
     }
     .section-left{
         @apply 
-        bg-slate-800 
-        flex 
+        bg-slate-800
+        flex-auto
+        flex
+          p-1
         md:w-1/2 
         justify-center 
         items-center;
     }
     .section-right{
-        @apply 
-        flex 
+        @apply
+        flex-auto
+        flex
+          p-1
         justify-center 
-        items-center 
+        items-center
         md:w-1/2 
         bg-blue-50;
     }
