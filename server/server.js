@@ -13,11 +13,13 @@ app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded())
 app.use(cors('*'))
-app.use('/role', roleRouter)
 app.use('/account', accountRouter)
 app.use('/request', requestRouter)
 app.use('/auth', authRoute)
 
+app.use('*', (req, res) => {
+    res.send("404")
+})
 
 app.listen(process.env.port,() => {
     console.log(`server start on http://${process.env.host}:${process.env.port}`)

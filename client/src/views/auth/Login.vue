@@ -98,9 +98,14 @@ export default {
                 auth.setToken(this.response.token)
                 await this.$router.push("/account/profile")
               }else{
-                if(this.response === 500){
+                if(this.response.status === 500){
                   await this.$router.push("/500")
                 }
+                
+                if(this.response.status === 400){
+                    this.response = false
+                }
+
               }
             }
         }
