@@ -61,7 +61,7 @@ Chemin:
 
 Installation de sequelize-cli:
 
-`npm install sequelize-cli`
+`npm install -g sequelize-cli`
 
 Création de la base de données:
 
