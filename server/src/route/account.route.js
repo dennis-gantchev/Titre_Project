@@ -50,9 +50,8 @@ accountRouter.post('/create',
     check('password')
         .notEmpty()
             .withMessage('Le mot de passe ne doit pas être vide.')
-        .not()
-            .isStrongPassword({minLength: 8, minLowercase:1, minUppercase: 1, minNumbers:1})
-                .withMessage('Le mot de passe doit contenir au minimum 8 caractères (une majuscule, une minuscule, un chiffre)')
+        .isLength({min:8})
+                .withMessage('Le mot de passe doit contenir au minimum 8 caractères ')
     ,
     check('passwordConfirm')
         .custom((value, { req }) => {

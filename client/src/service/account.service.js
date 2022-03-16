@@ -54,9 +54,9 @@ const AccountService = {
             haveError = true
             errors.password.push("Le mot de passe ne doit pas être vide.")
         }else{
-            if(!validator.isStrongPassword(account.password, {minLength: 8, minLowercase:1, minUppercase: 1, minNumbers:1})){
+            if(!validator.isLength(account.password, {min: 8})){
                 haveError = true
-                errors.password.push('Le mot de passe doit contenir au minimum 8 caractères (une majuscule, une minuscule, un chiffre)')
+                errors.password.push('Le mot de passe doit contenir au minimum 8 caractères')
             }
         }
 
