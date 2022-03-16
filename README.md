@@ -1,4 +1,4 @@
-# Installation dépandences
+# Installation dépendances
 ---
 ## Client
 ---
@@ -97,3 +97,7 @@ Chemin:
 Commande:
 
 `npm start`
+
+## Information
+
+Une partie backoffice est à moitié implémenté, merci de ne pas la prendre en compte.
