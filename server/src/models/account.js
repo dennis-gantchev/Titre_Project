@@ -9,7 +9,10 @@ export default (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // Account.hasMany(models.Request)
-      Account.belongsTo(models.Request, {foreignKey:'id', as: "client"})
+      Account.hasMany(models.Request)
+      Account.belongsToMany(models.Group, {through: "GroupAccount"})
+      Account.belongsToMany(models.Role, {through: "AccountRole"})
+
     }
   }
   Account.init({
@@ -17,16 +20,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
-    },
-    roleId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      foreignKey: true,
-      references: {
-        model:"Role",
-        key:"id"
-      },
-      defaultValue: 1
     },
     firstName: {
       type: DataTypes.STRING(15),

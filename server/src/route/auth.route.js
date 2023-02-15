@@ -17,7 +17,6 @@ authRoute.post('/login',
         .normalizeEmail()
         .custom( async (value, {req}) => {
             const accountExist = await Account.findOne({where: {email: value}});
-
             if(accountExist === null){
                 throw Error("Les identifiants n'existent pas")
             }else{

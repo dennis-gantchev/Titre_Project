@@ -8,7 +8,7 @@ const AuthMiddleware = {
 
 
         let token = JSON.parse(JSON.stringify(req.headers)).authorization
-
+        console.log(token)
         token = token.split(' ')[1]
         const tokenDecode = jwt.decode(token,process.env.jwtSecret)
 

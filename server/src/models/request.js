@@ -9,10 +9,9 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Request.hasOne(models.Account,{foreignKey:'id', sourceKey:"clientId"})
-      Request.hasOne(models.Role,{as: 'role', foreignKey:'id', sourceKey:"roleId"})
-      // Request.belongsTo(models.Account, {foreignKey:'clientId', as: 'client'})
-      // Request.belongsTo(models.Account, {foreignKey:{name:'agentId', allowNull:true}, as:'agent'})
+      Request.belongsTo(models.Account,{foreignKey:{allowNull: false}})
+      Request.belongsTo(models.Account)
+      Request.belongsTo(models.Group)
       // Request.belongsTo(models.Role, {foreignKey:'roleId', as: "role"})
     }
   }
@@ -40,12 +39,12 @@ export default (sequelize, DataTypes) => {
         key: "id"
       }
     },
-    roleId: {
+    groupId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       foreignKey: true,
       references: {
-        model: "Role",
+        model: "Group",
         key: "id"
       }
     },

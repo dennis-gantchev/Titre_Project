@@ -46,6 +46,16 @@
                 <router-link to="/admin/roles" id="admin-role" @click="onClickSubLink" v-bind:class="activeSubLink['admin-role'] ? 'active-sub-link' : '' ">Rôles</router-link>
                 <router-link to="/admin/requests" id="admin-request" @click="onClickSubLink" v-bind:class="activeSubLink['admin-request'] ? 'active-sub-link' : '' ">Demandes</router-link>
             </div>
+          <div id="group" v-bind:class="activeLink['group'] === true ? 'active-link' : 'nav-link'" @click="onClickLink">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+            </svg>
+            <span>Groupe</span>
+          </div>
+          <div v-show="activeLink['group'] === true" id="group-sub" class="nav-sub-link" >
+            <router-link to="/group/create" id="group-create" @click="onClickSubLink" v-bind:class="activeSubLink['group-create'] ? 'active-sub-link' : '' ">Créer</router-link>
+            <router-link to="/group/index" id="group-list" @click="onClickSubLink" v-bind:class="activeSubLink['group-list'] ? 'active-sub-link' : '' ">Liste</router-link>
+          </div>
 
             <div id="requests" v-bind:class="activeLink['requests'] === true ? 'active-link' : 'nav-link'" @click="onClickLink">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

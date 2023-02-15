@@ -5,7 +5,8 @@
     "database": "database_development",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "define": { "charset": "utf8", "dialectOptions": { "collate": "utf8_general_ci" } }
+    "define": {"timestamps": false, "charset": "utf8", "dialectOptions": { "collate": "utf8_general_ci" } }
+
   },
   "test": {
     "username": "root",

@@ -25,12 +25,12 @@ export async function up(queryInterface, Sequelize) {
         key: "id"
       }
     },
-    roleId: {
+    groupId: {
       type: Sequelize.INTEGER,
       allowNull: false,
       foreignKey: true,
       references: {
-        model: "Role",
+        model: "Group",
         key: "id"
       }
     },

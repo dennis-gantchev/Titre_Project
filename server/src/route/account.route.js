@@ -37,8 +37,9 @@ accountRouter.post('/create',
         .isEmail()
             .withMessage('Le format du mail est incorrecte.')
         .custom( async (value, {req}) => {
+            console.log(value)
             const accountExist = await Account.findOne({where: {email: value}});
-
+            console.log(accountExist)
             if(accountExist !== null){
 
                 throw Error("L'email est déjà utilisé")

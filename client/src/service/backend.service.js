@@ -2,7 +2,12 @@ import Auth from "../utils/Auth"
 const AuthService = new Auth()
 const BackendService = {
     get:async (path, data) => {
-        const url = new URL(`http://localhost:3003/${path}/${data}`)
+        let url
+        if(data){
+            url = new URL(`http://localhost:3003/${path}/${data}`)
+        }else{
+            url = new URL(`http://localhost:3003/${path}`)
+        }
         const header = new Headers()
         if(AuthService.loggedIn()){
             header.append('Authorization','Bearer '+ AuthService.getToken())
@@ -27,6 +32,7 @@ const BackendService = {
         })
         if(AuthService.loggedIn()){
             header.append('Authorization','Bearer '+ AuthService.getToken())
+            console.log(AuthService.getToken())
         }
         const myInit = {
             method: 'POST',
@@ -42,6 +48,39 @@ const BackendService = {
         return response
 
 
+    },
+    postWithFile: async (path, data) => {
+        const url = new URL(`http://localhost:3003/${path}`)
+        const header = new Headers({
+            // 'Content-Type': 'application/json'
+        })
+        if(AuthService.loggedIn()){
+            header.append('Authorization','Bearer '+ AuthService.getToken())
+        }
+        const formData = new FormData();
+        for (let property in data) {
+            if(data[property].constructor.name === "File"){
+                formData.append(property, data[property])
+            }else{
+                formData.append(property, JSON.stringify(data[property]))
+            }
+
+        }
+        console.log(formData)
+
+
+        const myInit = {
+            method: 'POST',
+            headers: header,
+            mode: "cors",
+            body:formData
+        }
+
+        let response = await fetch(url,myInit)
+
+
+        response = await response.json()
+        return response
     },
     postD: async (path, data) => {
         const url = new URL(`http://localhost:3003/${path}`)

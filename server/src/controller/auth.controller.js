@@ -19,14 +19,14 @@ const AuthController = {
         try{
             const { email } = req.body
             const account = await Account.findOne({where : {email: email}})
-            const role = await Role.findOne({where: {id: account.roleId}})
+            //const role = await Role.findOne({where: {id: account.roleId}})
 
             const token = jwt.sign({
                 id:account.id,
                 email: account.email,
-                role: role.name,
-                roleId: role.id,
-                roleLevel: role.level
+                //role: role.name,
+                //roleId: role.id,
+                //roleLevel: role.level
             },process.env.jwtSecret, { expiresIn: '1h' })
 
             res.status(200).send({ok: true,status:200 ,token: token})

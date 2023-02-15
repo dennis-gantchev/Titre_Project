@@ -33,6 +33,7 @@ const AccountController = {
         }
     },
     create:async (req, res)   => {
+        //console.log(req)
         const { errors } = validationResult(req)
 
         if(errors.length){

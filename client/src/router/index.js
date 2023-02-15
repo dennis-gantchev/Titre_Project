@@ -22,6 +22,9 @@ import RequestAgentEdit from "../views/request/RequestAgentEdit.vue";
 import P404 from '../views/error/P404.vue'
 import P403 from '../views/error/P403.vue'
 import P500 from '../views/error/P500.vue'
+import GroupCreate from "../views/group/GroupCreate.vue";
+import GroupIndex from "../views/group/GroupIndex.vue";
+import GroupShow from "../views/group/GroupShow.vue";
 const routes = [
     {
         path: "/",
@@ -42,6 +45,37 @@ const routes = [
             requireAgent: false,
             requireAdmin: false
         }
+    },
+    {
+        path: "/group/create",
+        name: "group-create",
+        component: GroupCreate,
+        meta: {
+            requiresAuth: false,
+            requireAgent: false,
+            requireAdmin: false
+        }
+    },
+    {
+        path: "/group/index",
+        name: "group-index",
+        component: GroupIndex,
+        meta: {
+            requiresAuth: false,
+            requireAgent: false,
+            requireAdmin: false
+        }
+    },
+    {
+        path: "/group/show/:id",
+        name: "group-show",
+        component: GroupShow,
+        meta: {
+            requiresAuth: false,
+            requireAgent: false,
+            requireAdmin: false
+        }
+
     },
     {
         path:"/request/create",

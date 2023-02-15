@@ -2,11 +2,12 @@ import validator from "validator"
 
 
 const RoleService = {
-    validate: (name, level) => {
+    validate: (role) => {
+        const {name, canManageTicket} = role
         let haveError = false
         const errors = {
             name: [],
-            level: []
+            permission: []
         }
         
         
@@ -25,26 +26,18 @@ const RoleService = {
             errors.name.push('Le nom doit contenir entre 3 et 15 caractères.')
         }
 
-        if(validator.isEmpty(level)){
+        if(canManageTicket !== true){
             haveError = true
-            errors.level.push('Le niveau de permission ne doit pas être vide.')
-        }
-
-        if(!validator.isNumeric(level)){
-            haveError = true
-            errors.level.push('Le niveau de permission doit être un numérique')
-        }
-
-        if(!(level > 0 && level <= 3)){
-            haveError = true
-            errors.level.push('Le niveau doit être compris entre 1 et 3.')
+            errors.permission.push('La permission gérée ses ticket est obligatoire')
         }
 
         if(haveError){
             return errors
         }else{
-            return true
+            return null
         }
 
     }
 }
+
+export default RoleService
