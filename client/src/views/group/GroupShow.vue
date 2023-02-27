@@ -26,8 +26,8 @@
         <MemberList :members="members" :accounts="accounts" :groupId="group.id" :roles="roles" @newMemberSend="newMemberSend"/>
       </div>
       <h2>Roles</h2>
-      <div class="form-group" v-for="(role, index) in roles" v-bind:key="index">
-        <RoleForm v-bind:role="role" v-bind:errors="errorRoles[index]" v-bind:form-index="index" @deleteRole="deleteRole"/>
+      <div class="space-y-3">
+        <RoleList :roles="roles" />
       </div>
     </article>
   </section>
@@ -41,12 +41,14 @@ import MemberList from "../../components/list/MemberList.vue";
 import { $vfm, VueFinalModal, ModalsContainer } from 'vue-final-modal'
 import "bootstrap-icons/font/bootstrap-icons.css";
 import GroupService from "../../service/group.service";
-import RoleForm from "../../components/group/RoleForm";
+import RoleForm from "../../components/group/RoleForm.vue";
+import RoleList from "../../components/list/RoleList.vue";
 
 
 export default {
   name: "GroupShow",
   components: {
+    RoleList,
     RoleForm,
     MemberList, VueFinalModal,
     ModalsContainer
@@ -54,6 +56,10 @@ export default {
   data() {
     return {
       errors: null,
+      errorRole: {
+        name: []
+      },
+      errorRoles: null,
       group: null,
       permission: null,
       roles: null,
@@ -97,6 +103,11 @@ export default {
     async newMemberSend(){
       console.log("Group show")
       await this.getData()
+    },
+    deleteRole(index){
+      this.roles.splice(index, 1)
+      console.log(index)
+      console.log(this.roles)
     }
   }
 }
