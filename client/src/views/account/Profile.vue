@@ -1,34 +1,29 @@
 <template>
-    <section class="profile-container">
-        <h5>Profile</h5>
-        <article class="profile">
-            <h6>Information personnelle</h6>
-            <div class="profile-body">
-                <div class="content-container">
-                    
-                    <div class="content-row">
-                        <p>Nom: {{account.firstName}}</p>
-                    </div>
-
-                    <div class="content-row">
-                        <p>Prénom: {{account.lastName}}</p>
-                    </div>
-
-                    <div class="content-row">
-                        <p>Email: {{account.email}}</p>
-                    </div>
-
-                    <div class="content-row">
-                        <p>Rôle: <span class="tag">{{account.roleName}}</span></p>
-                    </div>
+    <section>
+        <h1>Profile</h1>
+        <article>
+            <h2>Information personnelle</h2>
+            <div class="space-y-1">
+                <div class="flex w-[50%] space-x-3">
+                  <p>Nom: <strong>{{account.lastName}}</strong></p>
+                  <p>Prénom: <strong>{{account.firstName}}</strong></p>
                 </div>
+              <p>Email: <strong>{{account.email}}</strong></p>
             </div>
-            <div class="profile-footer">
-                <p>Crée le {{account.createdAt}}</p>
-                <p>Modifié le {{account.updatedAt}}</p>
+            <h2>Compte</h2>
+            <div class="flex w-[50%] space-x-3">
+              <p>Crée le <strong>{{account.createdAt}}</strong></p>
+              <p>Modifié le <strong>{{account.updatedAt}}</strong></p>
             </div>
+            <h2>Groupe</h2>
+            <div>
+              <p>Vous faites partie de <strong>{{countGroup}}</strong> groupe(s)</p>
+            </div>
+              <div class="profile-footer">
+
+              </div>
         </article>
-        <div class="button-container">
+        <div class="button-container-between">
             <router-link to="/account/edit"><button class="button-sky">Modifier</button></router-link>
             <a><button class="button-rose" @click="onDelete">Supprimer</button></a>
         </div>
@@ -51,17 +46,20 @@ export default {
           createdAt: null,
           updatedAt: null,
           roleName: null
-        }
+        },
+        countGroup: null
+
       }
     },
     async beforeMount() {
       const response = await BackendService.get('account/profile','')
       console.log(response)
       if(response.ok){
-        const { account } = response
+        const { account, countGroup } = response
         account.createdAt = DateUtils.convert(account.createdAt)
         account.updatedAt = DateUtils.convert(account.updatedAt)
         this.account = account
+        this.countGroup = countGroup
       }else{
         if(response.status === 500){
           await this.$router.push("/500")
@@ -94,34 +92,8 @@ export default {
 
 
 <style lang="scss" scoped>
-h5 {
-    @apply
-    font-bold 
-    text-5xl 
-    text-slate-800
-}
-h6{
-    @apply
-    font-bold 
-    text-3xl 
-    text-slate-50 
-    bg-slate-800 
-    rounded-tr-lg 
-    rounded-tl-lg 
-    p-1
-}
-
-
-article{
-    @apply
-    bg-slate-50 
-    shadow 
-    rounded 
-    min-w-full 
-    transition 
-    duration-200 
-    hover:shadow-lg
-}
+@import "src/assets/style/base.scss";
+@import "src/assets/style/button";
 .profile-container{
     @apply
     flex-1 
@@ -170,35 +142,6 @@ article{
     
 }
 
-.button-container{
-    @apply
-    flex 
-    flex-col 
-    md:flex-row 
-    md:justify-between
-}
-
-.button-sky{
-    @apply
-    bg-sky-600
-    text-white 
-    p-2 
-    shadow 
-    rounded-lg 
-    border 
-    hover:bg-sky-500
-}
-
-.button-rose{
-    @apply
-    bg-rose-600 
-    text-white 
-    p-2 
-    shadow 
-    rounded-lg 
-    border 
-    hover:bg-rose-500
-}
 .content-row > p{
     @apply
     text-xl 

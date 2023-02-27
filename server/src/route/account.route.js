@@ -11,6 +11,7 @@ const { Account } = model
 const accountRouter = Router()
 accountRouter.get('/edit',AuthMiddleware.verifToken, AccountController.edit, )
 accountRouter.get('/profile',AuthMiddleware.verifToken ,AccountController.profile)
+accountRouter.get('/show/:id', AccountController.show)
 accountRouter.post('/create',
     check('firstName')
         .notEmpty()

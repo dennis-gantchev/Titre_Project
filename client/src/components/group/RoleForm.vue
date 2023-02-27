@@ -6,7 +6,7 @@
       </svg>
     </div>
     <div class="space-y-1">
-      <label class="label_mandatory">Nom</label>
+      <label class="mandatory">Nom</label>
       <input v-bind:class="errors ?'errors-input':'input' " type="text" v-bind:name="'roleName'+formIndex" v-model="role.name" v-bind:disabled="disabled"/>
       <div v-if="errors && errors.name.length" class="errors-container">
               <span v-for="error in errors.name" v-bind:key="error">
@@ -90,66 +90,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-label{
-  @apply
-  text-slate-700
-  text-lg
-}
-.label_mandatory{
-  @apply
-  after:content-['*']
-  after:ml-0.5
-  after:text-red-500
-}
-.input{
-  @apply
-  w-full
-  py-1
-  px-2
-  rounded
-  border
-  border-slate-300
-  shadow-sm
-  hover:border-blue-500
-  focus:outline-none
-  focus:border-blue-500
-  focus:ring-1
-  focus:ring-blue-500
-  disabled:bg-slate-200
-  disabled:text-gray-600
-  disabled:border
-}
-.input-group{
-  @apply
-  flex
-  flex-col
-  space-y-1
-  w-full
-}
-.errors-container{
-  @apply
-  flex
-  flex-col
-  p-1
-  rounded
-  border-pink-500
-  bg-pink-100
-  text-pink-600
-}
-.errors-input{
-  @apply
-  w-full
-  py-1
-  px-2
-  rounded
-  border
-  border-pink-300
-  shadow-sm
-  focus:outline-none
-  focus:ring-1
-  border-pink-500
-  text-pink-600
-  focus:border-pink-500
-  focus:ring-pink-500
-}
+@import "src/assets/style/button";
+@import "src/assets/style/base";
+@import "src/assets/style/form";
+
 </style>

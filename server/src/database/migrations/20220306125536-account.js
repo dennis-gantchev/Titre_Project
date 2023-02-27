@@ -7,6 +7,10 @@ export async function up(queryInterface, Sequelize) {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
+    isAdmin:{
+      type: Sequelize.BOOLEAN,
+      allowNull: false
+    },
     firstName: {
       type: Sequelize.STRING,
       allowNull: false,

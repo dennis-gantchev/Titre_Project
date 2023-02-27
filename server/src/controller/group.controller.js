@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator';
 import model from "../models";
 import GroupService from "../service/group.service";
+import Sequelize from "sequelize";
 const { Account,Group, Role, sequelize } = model
 
 const GroupController = {
@@ -60,9 +61,75 @@ const GroupController = {
         }
 
     },
+    addMember: async(req, res) => {
+        const { errors } = validationResult(req)
+        console.log(errors)
+        if(errors.length){
+            if(errors[0].msg === "Forbidden"){
+                res.status(403).send({ok: false, status: 403, errors: errors[0]})
+            }else{
+                res.status(400).send({ok: false, status: 400, errors: errors[0]})
+            }
+            return
+        }
+        const t = await sequelize.transaction()
+        try{
+            let group = await Group.findOne({where: { id: req.body.id} , transaction: t})
+            let newMember = await Account.findOne({where:{ email: req.body.email} , transaction: t})
+            const role = await Role.findOne({where: {id: req.body.roleId}, transaction: t})
+            console.log(role)
+
+            group = await group.addAccount(newMember, { transaction: t})
+            newMember = await newMember.addRole(role, { transaction: t})
+            console.log(group)
+            t.commit()
+            res.status(201).send({ok: false, status: 201, group: group})
+        }catch (e){
+            console.log(e)
+            res.status(500).send({ok: false, status: 500})
+        }
+    },
     show: async (req, res) => {
-        const error = validationResult(req)
-        console.log(error)
+        const { errors } = validationResult(req)
+        if(errors.length){
+            if(errors[0].msg === "Forbidden"){
+                res.status(403).send({ok: false, status: 403, errors:errors[0]})
+            }else{
+                res.status(400).send({ok: false, status: 400, errors:errors[0]})
+            }
+            return
+        }
+
+        try{
+            const account = await Account.findOne({where: {id: req.params.accountId}})
+            const group = await Group.findOne({where: {id: req.params.id}})
+            const permission = await account.getRoles({where: {groupId: group.getDataValue("id")}})
+            const roles = await group.getRoles()
+            const members = await group.getAccounts({attributes: ["id", "firstName", "lastName"], include: [{model: Role, where:{groupId: group.getDataValue("id")}}]})
+            const countMember = await group.countAccounts()
+            let accounts = null
+            console.log(members)
+            if(permission[0].canInviteMember){
+                accounts = await Account.findAll({attributes: ["firstName", "lastName", "email"],
+                    where: {
+                        id: {
+                            [Sequelize.Op.ne]: members.map(member => member.GroupAccount.AccountId)
+                        }
+                    }
+
+                    }
+
+                )
+            }
+            //console.log(accounts)
+            res.status(200).send({ok: true, status: 200, group,roles,countMember,permission: permission[0],members, accounts})
+
+        }catch (e){
+            console.log(e)
+            res.status(500).send({ok: false, status: 500})
+        }
+
+        console.log(errors)
     }
 }
 

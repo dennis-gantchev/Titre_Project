@@ -1,0 +1,38 @@
+.button-sky{
+  @apply
+  bg-sky-600
+  text-white
+  p-2
+  shadow
+  rounded-lg
+  border
+  hover:bg-sky-500
+}
+
+.button-rose{
+  @apply
+  bg-rose-600
+  text-white
+  p-2
+  shadow
+  rounded-lg
+  border
+  hover:bg-rose-500
+}
+.button-emerald{
+  @apply
+  bg-emerald-600
+  text-white
+  p-2
+  shadow
+  rounded-lg
+  border
+  hover:bg-emerald-500
+}
+.button-container-between{
+  @apply
+  flex
+  flex-col
+  md:flex-row
+  md:justify-between
+}

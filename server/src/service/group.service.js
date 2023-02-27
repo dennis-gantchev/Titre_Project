@@ -10,6 +10,9 @@ const GroupService = {
             Roles: JSON.parse(roles),
             Account:account
         }
+    },
+    createNewMemebr: (req, newMember) => {
+        const {} = req.body
     }
 }
 

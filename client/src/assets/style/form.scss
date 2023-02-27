@@ -1,0 +1,149 @@
+label{
+  @apply
+  text-slate-700
+  text-lg
+}
+label.mandatory{
+  @apply
+  after:content-['*']
+  after:ml-0.5
+  after:text-red-500
+}
+form{
+  @apply
+  flex
+  flex-col
+  space-y-3
+}
+input:not([type="file"],[type="checkbox"]){
+  @apply
+  w-full
+  py-1
+  px-2
+  rounded
+  border
+  border-slate-300
+  shadow-sm
+  hover:border-blue-500
+  focus:outline-none
+  focus:border-blue-500
+  focus:ring-1
+  focus:ring-blue-500
+  disabled:bg-slate-200
+  disabled:text-gray-600
+  disabled:border
+}
+input[type="file"]{
+  @apply
+  w-full
+  file:py-1.5
+  file:px-4
+  rounded
+  border
+  bg-white
+  file:border
+  file:border-blue-900
+  file:bg-blue-900
+  file:text-white
+  file:shadow-sm
+  shadow-sm
+  hover:border-blue-500
+  focus:outline-none
+  focus:border-blue-500
+  focus:ring-1
+  focus:ring-blue-500
+}
+select{
+  @apply
+  w-full
+  py-1
+  px-2
+  rounded
+  border
+  border-slate-300
+  shadow-sm
+  hover:border-blue-500
+  focus:outline-none
+  focus:border-blue-500
+  focus:ring-1
+  focus:ring-blue-500
+}
+textarea{
+  @apply
+  w-full
+  py-1
+  px-2
+  rounded
+  border
+  border-slate-300
+  shadow-sm
+  hover:border-blue-500
+  focus:outline-none
+  focus:border-blue-500
+  focus:ring-1
+  focus:ring-blue-500
+}
+.errors-container{
+  @apply
+  flex
+  flex-col
+  p-1
+  rounded
+  border-pink-500
+  bg-pink-100
+  text-pink-600
+}
+.errors-input{
+  @apply
+  w-full
+  py-1
+  px-2
+  rounded
+  border
+  border-pink-300
+  shadow-sm
+  focus:outline-none
+  focus:ring-1
+  border-pink-500
+  text-pink-600
+  focus:border-pink-500
+  focus:ring-pink-500
+}
+.errors-input-file{
+  @apply
+  w-full
+  file:py-1.5
+  file:px-2
+  rounded
+  border
+  border-pink-300
+  shadow-sm
+  focus:outline-none
+  focus:ring-1
+  border-pink-500
+  text-pink-600
+  focus:border-pink-500
+  focus:ring-pink-500
+}
+.form-container{
+  @apply
+  bg-slate-50
+  p-3
+  shadow
+  rounded-lg
+}
+.input-group{
+  @apply
+  flex
+  flex-col
+  space-y-1
+  w-full
+}
+.form-group{
+  @apply
+  flex
+  flex-col
+  md:flex-row
+  justify-around
+  md:space-x-2
+}

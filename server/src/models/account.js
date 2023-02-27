@@ -21,6 +21,10 @@ export default (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true
     },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     firstName: {
       type: DataTypes.STRING(15),
       allowNull: false,

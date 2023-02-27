@@ -34,6 +34,34 @@ const GroupService = {
             return null
         }
 
+    },
+    validateNewMember: (email, role) =>{
+        let haveError = false
+        const errors = {
+            email: [],
+            role: [],
+        }
+
+        if(email === null){
+            haveError = true
+            errors.email.push("L'email ne doit pas être vide.")
+        }
+
+        if(email && !validator.isEmail(email)){
+            haveError = true
+            errors.email.push("Le format de l'email est incorrect")
+        }
+
+        if(role === null){
+            haveError = true
+            errors.role.push("Un rôle doit être sélectionné")
+        }
+
+        if(haveError){
+            return errors
+        }else{
+            return null
+        }
     }
 }
 

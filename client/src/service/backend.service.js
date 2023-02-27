@@ -40,6 +40,7 @@ const BackendService = {
             mode: "cors",
             body:JSON.stringify(data)
         }
+        console.log(myInit)
 
         let response = await fetch(url,myInit)
 

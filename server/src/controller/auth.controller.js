@@ -24,6 +24,7 @@ const AuthController = {
             const token = jwt.sign({
                 id:account.id,
                 email: account.email,
+                isAdmin: account.isAdmin
                 //role: role.name,
                 //roleId: role.id,
                 //roleLevel: role.level

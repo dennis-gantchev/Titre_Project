@@ -2,19 +2,36 @@ import model from "../models"
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv'
+import {count} from "types/lib/types/hash";
 
 dotenv.config()
-const { Account, Role } = model
+const { Account, Role, Group } = model
 const AccountController = {
     index: (req, res) => {
 
+    },
+    show: async (req, res) => {
+        const { id } = req.params
+
+        try{
+            const account = await Account.findOne({
+                attributes: ["id","firstName", "lastName", "createdAt"],
+                include: [{ model: Group, attributes: ["id", "name"]}] ,
+                where: {id: id}
+            })
+            res.status(200).send({ok:true, status: 200, account: account})
+
+        }catch (e){
+            console.log(e)
+            res.status(500).send({ok: false, status: 500})
+        }
     },
     profile:async (req,res) => {
         const { accountId } = req.params
 
         try {
             const account = await Account.findOne({where: {id: accountId}})
-            const role = await Role.findOne({where: {id: account.roleId}})
+            const countGroup = await account.countGroups()
 
             res.status(200).send({
                 ok: true,
@@ -25,10 +42,11 @@ const AccountController = {
                     email: account.email,
                     createdAt: account.createdAt,
                     updatedAt: account.updatedAt,
-                    roleName: role.name
-                }
+                },
+                countGroup: countGroup
             })
         }catch(e){
+            console.log(e)
             res.status(500).send({ok: false, status:500})
         }
     },

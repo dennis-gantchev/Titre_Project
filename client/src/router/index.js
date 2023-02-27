@@ -25,6 +25,7 @@ import P500 from '../views/error/P500.vue'
 import GroupCreate from "../views/group/GroupCreate.vue";
 import GroupIndex from "../views/group/GroupIndex.vue";
 import GroupShow from "../views/group/GroupShow.vue";
+import AccountShow from "../views/account/AccountShow.vue";
 const routes = [
     {
         path: "/",
@@ -76,6 +77,16 @@ const routes = [
             requireAdmin: false
         }
 
+    },
+    {
+        path: "/account/show/:id",
+        name: "account-show",
+        component: AccountShow,
+        meta: {
+            requiresAuth: false,
+            requireAgent: false,
+            requireAdmin: false
+        }
     },
     {
         path:"/request/create",

@@ -1,17 +1,17 @@
 <template>
   <section>
-    <h5>Nouveau groupe</h5>
+    <h1>Nouveau groupe</h1>
     <div class="form-container">
       <form @submit.prevent="onSubmit" method="POST" enctype="multipart/form-data">
-        <h1 class="text-bold text-2xl">Groupe</h1>
+        <h2>Groupe</h2>
         <div class="form-group">
           <div class="input-group">
-            <label for="title">Nom</label>
+            <label class="mandatory" for="title">Nom</label>
             <input
                 type="text"
                 name="title"
                 v-model="group.name"
-                v-bind:class="errors && errors.name.length ? 'errors-input': 'input'"
+                v-bind:class="errors && errors.name.length ? 'errors-input': ''"
             />
             <div v-if="errors && errors.name.length" class="errors-container">
               <span v-for="error in errors.name" v-bind:key="error">
@@ -22,11 +22,11 @@
           <div class="input-group">
             <label for="image">Image</label>
             <input
-                class="input-file"
+                class=""
                 type="file"
                 name="image"
                 @change="upload"
-                v-bind:class="errors && errors.image.length ? 'errors-input-file': 'input-file'"
+                v-bind:class="errors && errors.image.length ? 'errors-input-file': ''"
             />
             <div v-if="errors && errors.image.length" class="errors-container">
               <span v-for="error in errors.image" v-bind:key="error">
@@ -42,7 +42,7 @@
             <textarea class="textarea" name="description" v-model="group.description" />
           </div>
         </div>
-        <h1 class="text-bold text-2xl">Rôles</h1>
+        <h2>Rôles</h2>
         <div class="form-group">
           <div class="flex justify-start w-full space-x-2">
             <label for="defaultRole">Rôle par default</label>
@@ -52,10 +52,10 @@
         <div class="form-group" v-for="(role, index) in roles" v-bind:key="index">
           <RoleForm v-bind:disabled="index === 0 ? true : isDefaultRole" v-bind:role="role" v-bind:errors="errorRoles[index]" v-bind:form-index="index" @deleteRole="deleteRole"/>
         </div>
-        <div class="flex justify-start">
-          <button class="button-emerald" @click="addRole" v-bind:disabled="isDefaultRole">Ajouter</button>
+        <div class="text-right">
+          <button class="button-emerald" @click="addRole" v-bind:disabled="isDefaultRole">Ajouter un rôle</button>
         </div>
-        <div class="button-container">
+        <div class="text-right">
           <button class="button-sky" type="submit">Envoyer</button>
         </div>
       </form>
@@ -192,187 +192,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-section{
-  @apply
-  flex-1
-  p-10
-  space-y-10
-}
-h5{
-  @apply
-  text-5xl
-  text-slate-800
-  font-bold
-  font-sans
-}
-form{
-  @apply
-  flex
-  flex-col
-  space-y-3
-}
-label{
-  @apply
-  text-slate-700
-  after:content-['*']
-  after:ml-0.5
-  after:text-red-500
-  text-lg
-}
-.input{
-  @apply
-  w-full
-  py-1
-  px-2
-  rounded
-  border
-  border-slate-300
-  shadow-sm
-  hover:border-blue-500
-  focus:outline-none
-  focus:border-blue-500
-  focus:ring-1
-  focus:ring-blue-500
-}
-.input-file{
-  @apply
-  w-full
-  file:py-1.5
-  file:px-4
-  rounded
-  border
-  bg-white
-  file:border
-  file:border-blue-900
-  file:bg-blue-900
-  file:text-white
-  file:shadow-sm
-  shadow-sm
-  hover:border-blue-500
-  focus:outline-none
-  focus:border-blue-500
-  focus:ring-1
-  focus:ring-blue-500
-}
-.select{
-  @apply
-  w-full
-  py-1
-  px-2
-  rounded
-  border
-  border-slate-300
-  shadow-sm
-  hover:border-blue-500
-  focus:outline-none
-  focus:border-blue-500
-  focus:ring-1
-  focus:ring-blue-500
-}
-.textarea{
-  @apply
-  w-full
-  py-1
-  px-2
-  rounded
-  border
-  border-slate-300
-  shadow-sm
-  hover:border-blue-500
-  focus:outline-none
-  focus:border-blue-500
-  focus:ring-1
-  focus:ring-blue-500
-}
-.errors-container{
-  @apply
-  flex
-  flex-col
-  p-1
-  rounded
-  border-pink-500
-  bg-pink-100
-  text-pink-600
-}
-.errors-input{
-  @apply
-  w-full
-  py-1
-  px-2
-  rounded
-  border
-  border-pink-300
-  shadow-sm
-  focus:outline-none
-  focus:ring-1
-  border-pink-500
-  text-pink-600
-  focus:border-pink-500
-  focus:ring-pink-500
-}
-.errors-input-file{
-  @apply
-  w-full
-  file:py-1.5
-  file:px-2
-  rounded
-  border
-  border-pink-300
-  shadow-sm
-  focus:outline-none
-  focus:ring-1
-  border-pink-500
-  text-pink-600
-  focus:border-pink-500
-  focus:ring-pink-500
-}
+@import "src/assets/style/base";
+@import "src/assets/style/button";
+@import "src/assets/style/form";
 
-.form-container{
-  @apply
-  bg-slate-50
-  p-3
-  shadow
-  rounded-lg
-}
-.input-group{
-  @apply
-  flex
-  flex-col
-  space-y-1
-  w-full
-}
-.form-group{
-  @apply
-  flex
-  flex-col
-  md:flex-row
-  justify-around
-  md:space-x-2
-}
-.button-container{
-  @apply
-  flex
-  justify-end
-}
-.button-sky{
-  @apply
-  bg-sky-600
-  text-white
-  p-2
-  shadow
-  rounded-lg
-  border
-  hover:bg-sky-500
-}
-.button-emerald{
-  @apply
-  bg-emerald-600
-  text-white
-  p-2
-  shadow
-  rounded-lg
-  border
-  hover:bg-emerald-500
-  disabled:bg-gray-300
-}
 </style>

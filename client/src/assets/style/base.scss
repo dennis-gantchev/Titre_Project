@@ -1,0 +1,50 @@
+h1{
+  @apply
+  text-5xl
+  text-slate-800
+  font-bold
+  font-sans
+}
+
+h2{
+  @apply
+  text-2xl
+  font-medium
+  text-slate-700
+}
+h3{
+  @apply
+  text-xl
+  font-normal
+  text-slate-700
+}
+h5{
+  @apply
+  text-xl
+  font-normal
+}
+p{
+  @apply
+  text-lg
+  font-light
+}
+strong{
+  @apply
+  text-slate-700
+  font-normal
+}
+article{
+  @apply
+  bg-slate-50
+  p-3
+  shadow
+  rounded-lg
+  space-y-2
+}
+section{
+  @apply
+  flex-1
+  p-10
+  space-y-10
+}
+

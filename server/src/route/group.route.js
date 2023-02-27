@@ -6,7 +6,7 @@ import { check } from "express-validator"
 import groupController from "../controller/group.controller";
 
 
-const { Group, Account } = model
+const { Group, Account, Role } = model
 const groupRouter = Router()
 const multer = require('multer')
 let storage = multer.diskStorage({
@@ -78,24 +78,65 @@ groupRouter.get('/index/:page', AuthMiddleware.verifToken, GroupController.index
 
 groupRouter.get('/show/:id', AuthMiddleware.verifToken,
     check('id')
-        .notEmpty()
-            .withMessage("L'id ne doit pas être vide")
+        .isNumeric().withMessage("L'id doit être un nombre")
         .custom(async  (value, {req}) => {
             console.log("test")
             const account = await Account.findOne({where: {id: req.params.accountId}})
             const group = await account.getGroups({where: {id: req.params.id}})
             console.log(group)
             if(!group.length){
-                throw Error({
-                    message: 'Not an email',
-                    errorCode: 1,
-                })
+                throw Error("Forbidden")
             }else{
                 return true
             }
-        }),
+        })
+    ,
     GroupController.show
 
 )
+
+groupRouter.post('/addMember', AuthMiddleware.verifToken,
+        check('id')
+            .isNumeric().withMessage("L'id doit être un nombre.")
+            .custom( async  (value, {req}) => {
+                const account = await Account.findOne({where: { id: req.params.accountId}})
+                const group = await account.getGroups({where: { id: req.body.id}})
+
+                if(!group.length){
+                    throw Error("Forbidden")
+                }
+
+                const roles = await account.getRoles({where: {groupId: group[0].getDataValue("id")}})
+                if(!roles[0].canInviteMember){
+                    throw Error("Forbidden")
+                }
+
+                return true
+
+
+            }),
+        check('email')
+            .notEmpty().withMessage("L'email ne doit pas être vide.")
+            .isEmail().withMessage("Le format de l'email est incorrect")
+            .custom(async(value, {req}) => {
+                const account = await Account.findOne({where: { email: value}})
+                if(!account){
+                    throw Error("Cet utilisateur n'existe pas")
+                }
+                return true
+            }),
+        check('roleId')
+            .notEmpty().withMessage("Le roleId ne doit pas être vide")
+            .isNumeric().withMessage("Le roleId doit être un nombre")
+            .custom(async (value, {req}) => {
+                const role = await Role.findOne({where: { id: req.body.id}})
+
+                if(!role){
+                    throw Error("Le role n'existe pas")
+                }
+                return true
+            }),
+    GroupController.addMember
+    )
 
 export default groupRouter
