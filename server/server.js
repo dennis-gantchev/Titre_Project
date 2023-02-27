@@ -17,6 +17,7 @@ app.use(cors('*'))
 app.use('/account', accountRouter)
 app.use('/request', requestRouter)
 app.use('/group', groupRouter)
+app.use('/role', roleRouter)
 app.use('/auth', authRoute)
 
 app.use('*', (req, res) => {

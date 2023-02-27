@@ -1,9 +1,9 @@
 <template>
     <div class="space-y-2">
       <button class="bg-blue-900 py-2 px-2 rounded text-white" @click="onClickAddRole">Ajouter Rôle</button>
-      <NewRoleForm :onAddRole="onAddRole" :oldRole="null" @onClickStopModal="onClickStopModal"/>
+      <NewRoleForm v-if="onAddRole" :onAddRole="onAddRole" :GroupId="GroupId" :oldRole="roleSelected" @onClickStopModal="onClickStopModal"/>
       <div class="space-x-2 flex overflow-auto">
-        <div :class="role.id !== roleSelected ? 'bg-slate-100 p-2 shadow-md rounded flex-col cursor-pointer hover:bg-blue-100 hover:shadow-lg' : 'bg-blue-200 p-2 shadow rounded flex-col cursor-pointer shadow-lg'" v-for="(role, index) in roles" v-bind:key="index" @click="onClickRole(role.id)">
+        <div :class="role.id !== roleSelected ? 'bg-slate-100 p-2 shadow-md rounded flex-col cursor-pointer hover:bg-blue-100 hover:shadow-lg' : 'bg-blue-200 p-2 shadow rounded flex-col cursor-pointer shadow-lg'" v-for="(role, index) in roles" v-bind:key="index" @click="onClickRole(role)">
           <p><strong>{{role.name}}</strong></p>
           <div class="grid md:grid-cols-3 sm:grid-cols-2  p-1 justify-between">
             <div class="flex-col text-center">
@@ -64,22 +64,28 @@ import NewRoleForm from "../group/NewRoleForm.vue";
 export default {
   name: "RoleList",
   components: {NewRoleForm},
-  props: ['roles'],
+  props: ['roles', "GroupId"],
   data(){
     return {
       roleSelected: null,
       onAddRole:false
     }
   },
+  beforeMount() {
+    console.log(this.GroupId)
+  },
   methods: {
     onClickAddRole(){
       this.onAddRole = true
     },
-    onClickRole(id){
-      this.roleSelected = id
+    onClickRole(role){
+      this.roleSelected = role
+      this.onAddRole = true
     },
     onClickStopModal(){
+      this.roleSelected = null
       this.onAddRole = false
+
     }
   }
 }

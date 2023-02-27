@@ -1,9 +1,12 @@
+import {validationResult} from "express-validator";
+
 const RoleController = {
     index: (req, res) => {
 
     },
     create:(req, res) => {
-
+        const {errors} = validationResult(req)
+        console.log(errors)
     },
     edit: (req, res) => {
 

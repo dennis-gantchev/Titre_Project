@@ -27,7 +27,7 @@
       </div>
       <h2>Roles</h2>
       <div class="space-y-3">
-        <RoleList :roles="roles" />
+        <RoleList :roles="roles" :GroupId="group.id" />
       </div>
     </article>
   </section>

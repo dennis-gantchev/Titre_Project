@@ -78,7 +78,7 @@
           </div>
         </div>
         <div class="text-right">
-          <button class="bg-blue-900 py-2 px-2 text-white rounded">Envoyer</button>
+          <button class="bg-blue-900 py-2 px-2 text-white rounded" @click="onSendRole">Envoyer</button>
         </div>
       </div>
     </vue-final-modal>
@@ -87,14 +87,19 @@
 
 <script>
 import {ModalsContainer, VueFinalModal} from "vue-final-modal";
+import RoleService from "../../service/role.service";
+import BackendService from "../../service/backend.service";
 export default {
   name: "newRoleForm",
   components: {VueFinalModal, ModalsContainer},
-  props: ['onAddRole', 'oldRole'],
+  props: ['onAddRole', 'oldRole', 'GroupId'],
+  beforeMount() {
+    console.log(this.oldRole)
+  },
   data(){
     return{
       disabled: false,
-      role: this.oldRole ? this.oldRole : {
+      role: this.oldRole ? JSON.parse(JSON.stringify(this.oldRole)) : {
         name: "",
         canInviteMember: false,
         canBanMember: false,
@@ -104,13 +109,24 @@ export default {
         canDeleteGroupTicket: false,
         canAssignTicket: false,
         canManageTicket: true,
-        canResolveTicket:false
-      }
+        canResolveTicket:false,
+        GroupId: this.GroupId
+      },
+      errors: null
     }
   },
   methods: {
     onClickClose(){
       this.$emit('onClickStopModal')
+    },
+    onSendRole(){
+      console.log(this.role)
+      this.errors = RoleService.validate(this.role)
+
+      if(!this.errors){
+        const response = BackendService.post('role/create', this.role)
+      }
+      console.log(this.errors)
     }
   }
 }
